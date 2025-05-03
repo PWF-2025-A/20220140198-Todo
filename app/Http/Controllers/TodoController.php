@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class TodoController extends Controller
 
     public function create()
     {
-        return view('todo.create');
+        $categories = Category::where('user_id', Auth::id())->get();
+        return view('todo.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -39,14 +41,16 @@ class TodoController extends Controller
         $todo = Todo::create([
             'title' => ucfirst($request->title),
             'user_id' => Auth::id(),
+            'category_id' => $request->category_id,
         ]);
         return redirect()->route('todo.index')->with('success', 'Todo created successfully.');
     }
 
     public function edit(Todo $todo)
     {
+        $categories = Category::where('user_id', Auth::id())->get();
         if (Auth::id() == $todo->user_id) {
-            return view('todo.edit', compact('todo'));
+            return view('todo.edit', compact(['todo', 'categories']));
         } else {
             return redirect()->route('todo.index')->with('error', 'You are not authorized to edit this todo.');
         }
@@ -60,6 +64,7 @@ class TodoController extends Controller
 
         $todo->update([
             'title' => ucfirst($request->title),
+            'category_id' => $request->category_id
         ]);
 
         return redirect()->route('todo.index')->with('success', 'Todo updated successfully.');
