@@ -11,10 +11,8 @@ class TodoController extends Controller
 {
     public function index()
     {
-        // $todos = Todo::all();
-        // $todos = Todo::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        // dd($todos);
-        $todos = Todo::where('user_id', Auth::id())
+        $todos = Todo::with('category') // <-- Ini kunci utama untuk hindari N+1
+            ->where('user_id', Auth::id())
             ->orderBy('is_done', 'asc')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -25,6 +23,7 @@ class TodoController extends Controller
 
         return view('todo.index', compact('todos', 'todoCompleted'));
     }
+
 
     public function create()
     {

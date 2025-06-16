@@ -10,7 +10,10 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::with('todo')->where('user_id', Auth::id())->get();
+        $categories = Category::with('todo')
+            ->where('user_id', Auth::id())
+            ->get();
+
         return view('category.index', compact('categories'));
     }
 
@@ -24,6 +27,7 @@ class CategoryController extends Controller
         $request->validate([
             'title' => 'required|max:255'
         ]);
+
         Category::create([
             'user_id' => Auth::id(),
             'title' => $request->title
@@ -47,14 +51,10 @@ class CategoryController extends Controller
             'title' => 'required|max:255',
         ]);
 
-        // Practical
-        // $todo->title = $request->title;
-        // $todo->save();
-
-        // Eloquent Way - Readable
         $category->update([
             'title' => ucfirst($request->title),
         ]);
+
         return redirect()->route('category.index')->with('success', 'Todo category updated successfully!');
     }
 
