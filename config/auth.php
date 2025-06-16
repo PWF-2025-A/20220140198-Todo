@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // Added 'api' guard for JWT authentication as per the image
+        'api' => [
+            'driver' => 'jwt', // This assumes you have tymon/jwt-auth or similar configured
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -66,8 +71,8 @@ return [
         ],
 
         // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        //      'driver' => 'database',
+        //      'table' => 'users',
         // ],
     ],
 

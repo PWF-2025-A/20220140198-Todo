@@ -50,8 +50,8 @@
                                             class="hover:underline text-xs">{{ $data->title }}</a>
                                     </td>
                                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                        @if ($todo->category)
-                                            {{ $todo->category->title }}
+                                        @if ($data->category)
+                                            {{ $data->category->title }}
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 md:block">
